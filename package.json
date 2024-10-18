@@ -1,0 +1,35 @@
+{
+  "name": "@cityssm/mssql-query-replicate",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "A simple way to replicate the results of a SQL Server query from database into a table in another.",
+  "exports": "./index.js",
+  "scripts": {
+    "test": "cross-env NODE_ENV=dev DEBUG=mssql-query-replicate:*,mssql-multi-pool:* node --test",
+    "coverage": "cross-env NODE_ENV=dev DEBUG=mssql-query-replicate:*,mssql-multi-pool:* c8 --reporter=lcov --reporter=text --reporter=text-summary node --test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cityssm/node-mssql-query-replicate.git"
+  },
+  "keywords": [
+    "mssql",
+    "recordset"
+  ],
+  "author": "The Corporation of the City of Sault Ste. Marie",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cityssm/node-mssql-query-replicate/issues"
+  },
+  "homepage": "https://github.com/cityssm/node-mssql-query-replicate#readme",
+  "devDependencies": {
+    "@types/debug": "^4.1.12",
+    "@types/node": "^22.7.6",
+    "eslint-config-cityssm": "^13.0.0",
+    "prettier-config-cityssm": "^1.0.0"
+  },
+  "dependencies": {
+    "@cityssm/mssql-multi-pool": "^3.2.1",
+    "debug": "^4.3.7"
+  }
+}
