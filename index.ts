@@ -1,4 +1,4 @@
-import mssql, { type IResult } from '@cityssm/mssql-multi-pool'
+import mssql, { type mssqlTypes } from '@cityssm/mssql-multi-pool'
 import Debug from 'debug'
 
 import { buildColumnLists } from './helpers.js'
@@ -28,7 +28,7 @@ export default async function replicateQueryRecordset(
     debug('Retrieving source data...')
     const sourceResult = (await sourceRequest.query(
       sourceConfiguration.sourceSql
-    )) as IResult<Record<string, unknown>>
+    )) as mssqlTypes.IResult<Record<string, unknown>>
     debug(`Source data retrieved, ${sourceResult.recordset.length} rows.`)
 
     debug('Building column lists...')

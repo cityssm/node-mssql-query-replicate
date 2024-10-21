@@ -19,8 +19,7 @@ function columnMetadataToCreateString(columnMetadata) {
         ? columnMetadata.type()
         : columnMetadata.type;
     // eslint-disable-next-line @typescript-eslint/prefer-destructuring
-    const columnTypeName = columnType.type
-        .name;
+    const columnTypeName = columnType.type.name;
     switch (columnTypeName) {
         case 'Char':
         case 'NChar':
@@ -45,7 +44,7 @@ function columnMetadataToCreateString(columnMetadata) {
             createStringPieces.push(columnTypeName);
         }
     }
-    if (columnMetadata.nullable === false) {
+    if (!columnMetadata.nullable) {
         createStringPieces.push('not null');
     }
     return createStringPieces.join(' ');

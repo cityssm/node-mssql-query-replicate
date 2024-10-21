@@ -1,7 +1,9 @@
-import type { mssql } from '@cityssm/mssql-multi-pool'
+import type { mssqlTypes } from '@cityssm/mssql-multi-pool'
 
 export function buildColumnLists(
-  columnMetadata: Array<mssql.IColumnMetadata[keyof mssql.IColumnMetadata]>
+  columnMetadata: Array<
+    mssqlTypes.IColumnMetadata[keyof mssqlTypes.IColumnMetadata]
+  >
 ): { create: string; insert: string; parameters: string } {
   const create: string[] = []
   const insert: string[] = []
@@ -21,7 +23,7 @@ export function buildColumnLists(
 }
 
 function columnMetadataToCreateString(
-  columnMetadata: mssql.IColumnMetadata[keyof mssql.IColumnMetadata]
+  columnMetadata: mssqlTypes.IColumnMetadata[keyof mssqlTypes.IColumnMetadata]
 ): string {
   const createStringPieces = [`[${columnMetadata.name}]`]
 
@@ -31,8 +33,9 @@ function columnMetadataToCreateString(
       : columnMetadata.type
 
   // eslint-disable-next-line @typescript-eslint/prefer-destructuring
-  const columnTypeName = (columnType.type as { name: keyof typeof mssql.TYPES })
-    .name
+  const columnTypeName = (
+    columnType.type as { name: keyof typeof mssqlTypes.TYPES }
+  ).name
 
   switch (columnTypeName) {
     case 'Char':
@@ -66,7 +69,7 @@ function columnMetadataToCreateString(
     }
   }
 
-  if (columnMetadata.nullable === false) {
+  if (!columnMetadata.nullable) {
     createStringPieces.push('not null')
   }
 

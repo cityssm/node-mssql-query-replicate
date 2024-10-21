@@ -1,10 +1,10 @@
-import type { config as MSSQLConfig } from '@cityssm/mssql-multi-pool';
+import type { mssqlTypes } from '@cityssm/mssql-multi-pool';
 export interface SourceConfiguration {
     sourceSql: string;
     sourceParameters?: Record<string, unknown>;
-    sourceDatabase: MSSQLConfig;
+    sourceDatabase: mssqlTypes.config;
 }
 export interface DestinationConfiguration {
     destinationTableName: string;
-    destinationDatabase: MSSQLConfig;
+    destinationDatabase: mssqlTypes.config;
 }

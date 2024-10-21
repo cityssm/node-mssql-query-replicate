@@ -24,12 +24,12 @@
   "homepage": "https://github.com/cityssm/node-mssql-query-replicate#readme",
   "devDependencies": {
     "@types/debug": "^4.1.12",
-    "@types/node": "^22.7.6",
+    "@types/node": "^22.7.7",
     "eslint-config-cityssm": "^13.0.0",
     "prettier-config-cityssm": "^1.0.0"
   },
   "dependencies": {
-    "@cityssm/mssql-multi-pool": "^3.2.1",
+    "@cityssm/mssql-multi-pool": "^4.0.0",
     "debug": "^4.3.7"
   }
 }
