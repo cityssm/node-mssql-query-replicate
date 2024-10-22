@@ -1,5 +1,10 @@
 import type { mssqlTypes } from '@cityssm/mssql-multi-pool'
 
+/**
+ * 
+ * @param columnMetadata - Column metadata from a source database.
+ * @returns Column lists for creating and inserting records.
+ */
 export function buildColumnLists(
   columnMetadata: Array<
     mssqlTypes.IColumnMetadata[keyof mssqlTypes.IColumnMetadata]
@@ -25,17 +30,20 @@ export function buildColumnLists(
 function columnMetadataToCreateString(
   columnMetadata: mssqlTypes.IColumnMetadata[keyof mssqlTypes.IColumnMetadata]
 ): string {
+  console.log(columnMetadata)
+
   const createStringPieces = [`[${columnMetadata.name}]`]
 
-  const columnType =
+  const columnType = (
     typeof columnMetadata.type === 'function'
       ? columnMetadata.type()
       : columnMetadata.type
+  ) as mssqlTypes.ISqlType | undefined
 
-  // eslint-disable-next-line @typescript-eslint/prefer-destructuring
-  const columnTypeName = (
-    columnType.type as { name: keyof typeof mssqlTypes.TYPES }
-  ).name
+  const columnTypeName =
+    columnType === undefined
+      ? 'VarChar'
+      : (columnType.type as { name: keyof typeof mssqlTypes.TYPES }).name
 
   switch (columnTypeName) {
     case 'Char':
@@ -44,16 +52,23 @@ function columnMetadataToCreateString(
     case 'NVarChar':
     case 'VarBinary': {
       createStringPieces.push(
-        `${columnTypeName} (${columnMetadata.length > 8000 ? 'max' : columnMetadata.length})`
+        `${columnTypeName} (${columnMetadata.length === 0 || columnMetadata.length > 8000 ? 'max' : columnMetadata.length})`
       )
       break
     }
 
     case 'Decimal':
     case 'Numeric': {
-      createStringPieces.push(
-        `${columnTypeName} (${columnMetadata.precision}, ${columnMetadata.scale})`
-      )
+      if (
+        columnMetadata.precision !== undefined &&
+        columnMetadata.scale !== undefined
+      ) {
+        createStringPieces.push(
+          `${columnTypeName} (${columnMetadata.precision}, ${columnMetadata.scale})`
+        )
+      } else {
+        createStringPieces.push(`VarChar (${columnMetadata.length + 1})`)
+      }
       break
     }
 

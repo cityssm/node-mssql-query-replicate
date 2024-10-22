@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "@cityssm/mssql-multi-pool": "^4.0.0",
+    "@cityssm/mssql-system-catalog": "^0.1.0",
     "debug": "^4.3.7"
   }
 }

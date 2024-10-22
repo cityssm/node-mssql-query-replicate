@@ -3,7 +3,7 @@ import { after, describe, it } from 'node:test'
 
 import { releaseAll } from '@cityssm/mssql-multi-pool'
 
-import replicateQueryRecordset from '../index.js'
+import { replicateQueryRecordsetAsView } from '../index.js'
 
 import { testConfigurations } from './config.js'
 
@@ -13,13 +13,26 @@ await describe('mssql-query-replicate', async () => {
   })
 
   for (const testConfiguration of testConfigurations) {
-    await it(`Replicates ${testConfiguration.testName}`, async () => {
-      const result = await replicateQueryRecordset(
+    const replicateTestFunction = async (): Promise<void> => {
+      const result = await replicateQueryRecordsetAsView(
         testConfiguration.source,
         testConfiguration.destination
       )
 
-      assert.ok(result)
-    })
+      console.log(result)
+
+      assert.ok(result.success)
+      assert.ok(result.destinationRows > 0)
+    }
+
+    await it(
+      `Replicates ${testConfiguration.testName} to a view (creates new view)`,
+      replicateTestFunction
+    )
+
+    await it(
+      `Replicates ${testConfiguration.testName} to a view again (alters existing view)`,
+      replicateTestFunction
+    )
   }
 })

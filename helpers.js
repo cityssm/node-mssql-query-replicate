@@ -1,3 +1,8 @@
+/**
+ *
+ * @param columnMetadata - Column metadata from a source database.
+ * @returns Column lists for creating and inserting records.
+ */
 export function buildColumnLists(columnMetadata) {
     const create = [];
     const insert = [];
@@ -14,24 +19,32 @@ export function buildColumnLists(columnMetadata) {
     };
 }
 function columnMetadataToCreateString(columnMetadata) {
+    console.log(columnMetadata);
     const createStringPieces = [`[${columnMetadata.name}]`];
-    const columnType = typeof columnMetadata.type === 'function'
+    const columnType = (typeof columnMetadata.type === 'function'
         ? columnMetadata.type()
-        : columnMetadata.type;
-    // eslint-disable-next-line @typescript-eslint/prefer-destructuring
-    const columnTypeName = columnType.type.name;
+        : columnMetadata.type);
+    const columnTypeName = columnType === undefined
+        ? 'VarChar'
+        : columnType.type.name;
     switch (columnTypeName) {
         case 'Char':
         case 'NChar':
         case 'VarChar':
         case 'NVarChar':
         case 'VarBinary': {
-            createStringPieces.push(`${columnTypeName} (${columnMetadata.length > 8000 ? 'max' : columnMetadata.length})`);
+            createStringPieces.push(`${columnTypeName} (${columnMetadata.length === 0 || columnMetadata.length > 8000 ? 'max' : columnMetadata.length})`);
             break;
         }
         case 'Decimal':
         case 'Numeric': {
-            createStringPieces.push(`${columnTypeName} (${columnMetadata.precision}, ${columnMetadata.scale})`);
+            if (columnMetadata.precision !== undefined &&
+                columnMetadata.scale !== undefined) {
+                createStringPieces.push(`${columnTypeName} (${columnMetadata.precision}, ${columnMetadata.scale})`);
+            }
+            else {
+                createStringPieces.push(`VarChar (${columnMetadata.length + 1})`);
+            }
             break;
         }
         case 'Time':
