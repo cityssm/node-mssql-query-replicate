@@ -2,4 +2,4 @@
 coverage/
 node_modules/
 
-test/config.*
+test/test.config.*
