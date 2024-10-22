@@ -23,7 +23,7 @@ const debug = Debug('mssql-query-replicate:index')
  * @param destinationConfiguration - Destination database configuration.
  * @returns the status of the replication.
  */
-export default async function replicateQueryRecordset(
+export async function replicateQueryRecordset(
   sourceConfiguration: SourceConfiguration,
   destinationConfiguration: DestinationConfiguration
 ): Promise<ReplicateResult> {
@@ -263,3 +263,15 @@ export async function replicateQueryRecordsetAsView(
     destinationTableName
   }
 }
+
+export default {
+  replicateQueryRecordset,
+  replicateQueryRecordsetAsView
+}
+
+export type {
+  SourceConfiguration,
+  DestinationConfiguration,
+  DestinationViewConfiguration,
+  ReplicateResult
+} from './types.js'

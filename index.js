@@ -12,7 +12,7 @@ const debug = Debug('mssql-query-replicate:index');
  * @param destinationConfiguration - Destination database configuration.
  * @returns the status of the replication.
  */
-export default async function replicateQueryRecordset(sourceConfiguration, destinationConfiguration) {
+export async function replicateQueryRecordset(sourceConfiguration, destinationConfiguration) {
     let errorStep = '';
     let destinationRows = 0;
     try {
@@ -174,3 +174,7 @@ export async function replicateQueryRecordsetAsView(sourceConfiguration, destina
         destinationTableName
     };
 }
+export default {
+    replicateQueryRecordset,
+    replicateQueryRecordsetAsView
+};
