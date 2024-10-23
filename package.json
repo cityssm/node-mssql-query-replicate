@@ -2,7 +2,7 @@
   "name": "@cityssm/mssql-query-replicate",
   "version": "0.1.0",
   "type": "module",
-  "description": "A simple way to replicate the results of a SQL Server query from database into a table in another.",
+  "description": "A simple way to replicate the results of a SQL Server query from one database into a table in another.",
   "exports": "./index.js",
   "scripts": {
     "test": "cross-env NODE_ENV=dev DEBUG=mssql-query-replicate:*,mssql-multi-pool:* node --test",
