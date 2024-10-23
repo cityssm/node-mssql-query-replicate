@@ -13,13 +13,12 @@ const debug = Debug('mssql-query-replicate:index');
  * @returns the status of the replication.
  */
 export async function replicateQueryRecordset(sourceConfiguration, destinationConfiguration) {
-    let errorStep = '';
+    let errorStep = 'source:connect';
     let destinationRows = 0;
     try {
         /*
          * Connect to source database
          */
-        errorStep = 'source:connect';
         debug('Connecting to source database...');
         const sourcePool = await mssql.connect(sourceConfiguration.sourceDatabase);
         debug('Connected successfully.');
@@ -88,7 +87,7 @@ export async function replicateQueryRecordset(sourceConfiguration, destinationCo
         return {
             success: false,
             destinationRows,
-            errorStep: errorStep,
+            errorStep,
             errorMessage: error.toString()
         };
     }
@@ -116,12 +115,11 @@ export async function replicateQueryRecordsetAsView(sourceConfiguration, destina
     if (!result.success) {
         return result;
     }
-    let errorStep = '';
+    let errorStep = 'destination:connect';
     try {
         /*
          * Connect to destination database
          */
-        errorStep = 'destination:connect';
         const destinationPool = await mssql.connect(destinationConfiguration.destinationDatabase);
         /*
          * Get destination views
@@ -168,7 +166,7 @@ export async function replicateQueryRecordsetAsView(sourceConfiguration, destina
         return {
             success: false,
             destinationRows: result.destinationRows,
-            errorStep: errorStep,
+            errorStep,
             errorMessage: error.toString()
         };
     }

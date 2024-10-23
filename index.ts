@@ -27,15 +27,13 @@ export async function replicateQueryRecordset(
   sourceConfiguration: SourceConfiguration,
   destinationConfiguration: DestinationConfiguration
 ): Promise<ReplicateResult> {
-  let errorStep: '' | ErrorStep = ''
+  let errorStep: ErrorStep = 'source:connect'
   let destinationRows = 0
 
   try {
     /*
      * Connect to source database
      */
-
-    errorStep = 'source:connect'
 
     debug('Connecting to source database...')
 
@@ -149,7 +147,7 @@ export async function replicateQueryRecordset(
     return {
       success: false,
       destinationRows,
-      errorStep: errorStep as ErrorStep,
+      errorStep,
       errorMessage: error.toString()
     }
   }
@@ -186,14 +184,12 @@ export async function replicateQueryRecordsetAsView(
     return result
   }
 
-  let errorStep: '' | ErrorStep = ''
+  let errorStep: ErrorStep = 'destination:connect'
 
   try {
     /*
      * Connect to destination database
      */
-
-    errorStep = 'destination:connect'
 
     const destinationPool = await mssql.connect(
       destinationConfiguration.destinationDatabase
@@ -260,7 +256,7 @@ export async function replicateQueryRecordsetAsView(
     return {
       success: false,
       destinationRows: result.destinationRows,
-      errorStep: errorStep as ErrorStep,
+      errorStep,
       errorMessage: error.toString()
     }
   }
