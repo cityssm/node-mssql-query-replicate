@@ -2,7 +2,7 @@ import assert from 'node:assert';
 import { after, describe, it } from 'node:test';
 import { releaseAll } from '@cityssm/mssql-multi-pool';
 import { replicateQueryRecordsetAsView } from '../index.js';
-import { testConfigurations } from './config.js';
+import { testConfigurations } from './test.config.js';
 await describe('mssql-query-replicate', async () => {
     after(() => {
         void releaseAll();

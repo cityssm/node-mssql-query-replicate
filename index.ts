@@ -51,7 +51,15 @@ export async function replicateQueryRecordset(
 
     let sourceRequest = sourcePool.request()
 
-    if (sourceConfiguration.sourceParameters !== undefined) {
+    const sourceSql =
+      sourceConfiguration.sourceType === 'sql'
+        ? sourceConfiguration.sourceSql
+        : `select * from ${sourceConfiguration.sourceTableName}`
+
+    if (
+      sourceConfiguration.sourceType === 'sql' &&
+      sourceConfiguration.sourceParameters !== undefined
+    ) {
       for (const [parameterName, parameterValue] of Object.entries(
         sourceConfiguration.sourceParameters
       )) {
@@ -68,7 +76,7 @@ export async function replicateQueryRecordset(
     debug('Retrieving source data...')
 
     const sourceResult = (await sourceRequest.query(
-      sourceConfiguration.sourceSql
+      sourceSql
     )) as mssqlTypes.IResult<Record<string, unknown>>
 
     debug(`Source data retrieved, ${sourceResult.recordset.length} rows.`)

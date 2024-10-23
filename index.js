@@ -28,7 +28,11 @@ export async function replicateQueryRecordset(sourceConfiguration, destinationCo
          */
         errorStep = 'source:request';
         let sourceRequest = sourcePool.request();
-        if (sourceConfiguration.sourceParameters !== undefined) {
+        const sourceSql = sourceConfiguration.sourceType === 'sql'
+            ? sourceConfiguration.sourceSql
+            : `select * from ${sourceConfiguration.sourceTableName}`;
+        if (sourceConfiguration.sourceType === 'sql' &&
+            sourceConfiguration.sourceParameters !== undefined) {
             for (const [parameterName, parameterValue] of Object.entries(sourceConfiguration.sourceParameters)) {
                 sourceRequest = sourceRequest.input(parameterName, parameterValue);
             }
@@ -38,7 +42,7 @@ export async function replicateQueryRecordset(sourceConfiguration, destinationCo
          */
         errorStep = 'source:query';
         debug('Retrieving source data...');
-        const sourceResult = (await sourceRequest.query(sourceConfiguration.sourceSql));
+        const sourceResult = (await sourceRequest.query(sourceSql));
         debug(`Source data retrieved, ${sourceResult.recordset.length} rows.`);
         /*
          * Build destination SQL statements

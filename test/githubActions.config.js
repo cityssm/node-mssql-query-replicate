@@ -10,8 +10,9 @@ const databaseConfig = {
 };
 export const testConfigurations = [
     {
-        testName: 'TestDatabase',
+        testName: 'sys.objects',
         source: {
+            sourceType: 'sql',
             sourceSql: 'select top 10 * from sys.objects where o.type = @objectType',
             sourceParameters: {
                 objectType: 'U'
@@ -20,6 +21,18 @@ export const testConfigurations = [
         },
         destination: {
             destinationViewName: 'SysObjectsU',
+            destinationDatabase: databaseConfig,
+            dropOldTables: true
+        }
+    }, {
+        testName: 'sys.databases',
+        source: {
+            sourceType: 'table',
+            sourceTableName: 'sys.databases',
+            sourceDatabase: databaseConfig
+        },
+        destination: {
+            destinationViewName: 'SysDatabases',
             destinationDatabase: databaseConfig,
             dropOldTables: true
         }
