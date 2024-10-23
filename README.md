@@ -17,6 +17,7 @@ import { replicateQueryRecordsetAsView } from '@cityssm/mssql-query-replicate'
 
 const result = await replicateQueryRecordsetAsView(
   {
+    sourceType: 'sql',
     sourceSql: `SELECT w.workOrderNumber,
         w.workOrderDate,
         w.workOrderDescription, s.workOrderStatus
