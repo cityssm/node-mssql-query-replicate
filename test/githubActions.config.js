@@ -13,7 +13,7 @@ export const testConfigurations = [
         testName: 'sys.objects',
         source: {
             sourceType: 'sql',
-            sourceSql: 'select top 10 * from sys.objects where o.type = @objectType',
+            sourceSql: 'select top 10 * from sys.objects where type = @objectType',
             sourceParameters: {
                 objectType: 'U'
             },
